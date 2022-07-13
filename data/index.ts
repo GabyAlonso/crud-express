@@ -1,2 +1,2 @@
-export {default as Articles} from './articles';
-export {default as Comments} from './comments';
+export {default as articles} from './articles';
+export {default as comments} from './comments';

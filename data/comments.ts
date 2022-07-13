@@ -8,7 +8,7 @@ const comments: Comment[] = [{
     title: 'Comment Article 1',
     author: 'Cosme Fulanito',
     body: 'A comment for article 1',
-    articleid: articles[0].id
+    articleId: articles[0].id
 }]
 
 export default comments;
