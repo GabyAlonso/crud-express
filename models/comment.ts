@@ -1,17 +1,16 @@
-class Comment {
-    id: string;
-    title: string;
-    body: string;
-    author: string;
-    articleid: string
+import mongoose, {Schema} from "mongoose";
 
-    constructor(id: string, title: string, body: string, author: string, articleid: string) {
-        this.id = id;
-        this.title = title;
-        this.body = body;
-        this.author = author;
-        this.articleid = articleid;
-    }
+interface IComment {
+    title: string,
+    author: string,
+    body: string,
+    article: any
 }
+const Comment = mongoose.model('Comment', new Schema<IComment>({
+    title: {type: String, required: true},
+    author: {type: String, required: true},
+    body: {type: String, required: true},
+    article: { type: Schema.Types.ObjectId, ref: 'Article' }
+}))
 
-export default Comment;
+export {Comment, IComment};

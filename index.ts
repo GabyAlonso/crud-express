@@ -1,3 +1,6 @@
+import {errorHandler} from "./middlewares/errorHandler";
+
+const mongoose = require('mongoose');
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
@@ -9,8 +12,17 @@ const app = express();
 app.use(logger('dev'));
 app.use(bodyParser.json());
 
+app.use(errorHandler);
+
 Routes.configure(app);
 
-app.listen(PORT, () => {
-    console.log(`Express server listening on port ${PORT}`);
-});
+const start = async () => {
+    await mongoose.connect('mongodb://localhost/crud-express');
+
+    app.listen(PORT, () => {
+        console.log(`Express server listening on port ${PORT}`);
+    });
+};
+
+start();
+
