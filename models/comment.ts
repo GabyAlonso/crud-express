@@ -4,7 +4,7 @@ interface IComment {
     title: string,
     author: string,
     body: string,
-    article: any
+    article: Schema.Types.ObjectId
 }
 const Comment = mongoose.model('Comment', new Schema<IComment>({
     title: {type: String, required: true},
