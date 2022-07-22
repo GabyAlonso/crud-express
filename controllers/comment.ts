@@ -7,7 +7,7 @@ const commentService = new CommentService();
 class CommentController {
     static async fetch(req: Request, res: Response, next: NextFunction) {
         try {
-            res.send(await commentService.fetch({article: req.params.article}));
+            res.send(await commentService.fetch(req.params.article));
         }
         catch(err){
             next(err);
