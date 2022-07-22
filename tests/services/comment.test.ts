@@ -1,26 +1,18 @@
 import {Article, Comment, IComment} from "../../models";
 import {CommentService} from "../../services";
-import {Schema} from "mongoose";
-
-const mongoose = require('mongoose');
+const testDb = require('../testDb');
 
 describe("CommentService", () => {
     beforeAll(async () => {
-        await mongoose.connect('mongodb://localhost/crud-express-test');
+        await testDb.connect();
     });
 
     afterEach(async () => {
-        const collections = mongoose.connection.collections;
-
-        for (const key in collections) {
-            const collection = collections[key];
-            await collection.deleteMany();
-        }
+        await testDb.reset();
     });
 
     afterAll(async () => {
-        await mongoose.connection.dropDatabase();
-        await mongoose.connection.close();
+        await testDb.disconnect();
     });
 
     const commentService = new CommentService();

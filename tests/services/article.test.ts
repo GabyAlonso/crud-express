@@ -1,38 +1,18 @@
 import {Article, IArticle, Comment} from "../../models";
 import {ArticleService} from "../../services";
-
-const mongoose = require('mongoose');
-
-let sharksArticle: IArticle;
-let catsArticle: IArticle;
-
-const createArticles = async () => {
-    sharksArticle = await Article.create({  title: "Sharks",
-        author: "not-a-shark",
-        body: "An article about Sharks"});
-
-    catsArticle = await Article.create({  title: "Cats",
-        author: "catlady32",
-        body: "An article about Cats"});
-};
+const testDb = require('../testDb');
 
 describe("ArticleService", () => {
     beforeAll(async () => {
-        await mongoose.connect('mongodb://localhost/crud-express-test');
+        await testDb.connect();
     });
 
     afterEach(async () => {
-        const collections = mongoose.connection.collections;
-
-        for (const key in collections) {
-            const collection = collections[key];
-            await collection.deleteMany();
-        }
+        await testDb.reset();
     });
 
     afterAll(async () => {
-        await mongoose.connection.dropDatabase();
-        await mongoose.connection.close();
+        await testDb.disconnect();
     });
 
     const articleService = new ArticleService();
@@ -45,7 +25,14 @@ describe("ArticleService", () => {
         });
 
         test('should return articles', async () => {
-            await createArticles();
+            const sharksArticle = await Article.create({  title: "Sharks",
+                author: "not-a-shark",
+                body: "An article about Sharks"});
+
+            const catsArticle = await Article.create({  title: "Cats",
+                author: "catlady32",
+                body: "An article about Cats"});
+
             const articles = await articleService.fetch();
 
             expect(articles[0].title).toBe(sharksArticle.title);
@@ -54,7 +41,7 @@ describe("ArticleService", () => {
     });
 
     describe('find', () => {
-        test('should return undefined', async () => {
+        test('should return null', async () => {
             const article = await articleService.find("62d4842f0fc512457d632a0e");
 
             expect(article).toBeNull();
